@@ -1,475 +1,444 @@
 " Vim syntax file
-" Language: FOO
-" Version:  0.0
+" Language:    Foo
+" Version:     0.0
 " Last Change: 6/8/2014
-" Maintainer:	Dylan Jayatilaka <dylan.jayatilaka@gmail.com>
-" Credits:
-"   Based on Ajit Thakkar's fortran.vim file
+" Maintainer:  Dylan Jayatilaka <dylan.jayatilaka@gmail.com>
+" Credits:     Based on Ajit Thakkar's fortran.vim file
 
 " Quit if a syntax file is already loaded
 if exists("b:current_syntax")
   finish
 endif
 
-  syn match fortran90Identifier		"\<\a\w*\>" contains=fortranSerialNumber
-  if exists("fortran_more_precise")
-    syn match fortranConstructName "\(\<end\s*do\s\+\)\@<=\a\w*\>"
-    syn match fortranConstructName "\(\<end\s*if\s\+\)\@<=\a\w*\>"
-    syn match fortranConstructName "\(\<end\s*select\s\+\)\@<=\a\w*\>"
-  endif
+set comments=:!
 
-syn match   fortranUnitHeader	"\<end\>"
+syn match   fooUnitHeader          "\<function\>"
+syn match   fooUnitHeader          "\<program\>"
+syn match   fooUnitHeader          "\<subroutine\>"
+syn match   fooUnitHeader          "\<end\>"
+syn match   fooUnitHeader          "\<module\>"
+syn match   fooUnitHeader          "\<end\s*function"
+syn match   fooUnitHeader          "\<end\s*interface"
+syn match   fooUnitHeader          "\<end\s*module"
+syn match   fooUnitHeader          "\<end\s*program"
+syn match   fooUnitHeader          "\<end\s*subroutine"
 
-syn keyword fortranType		character complex integer
-syn keyword fortranType		intrinsic
-syn match fortranType		"\<implicit\>"
-syn keyword fortranStructure	dimension
-syn keyword fortranStorageClass	parameter save
-syn match fortranUnitHeader	"\<subroutine\>"
-syn keyword fortranCall		call
-syn match fortranUnitHeader	"\<function\>"
-syn match fortranUnitHeader	"\<program\>"
-syn keyword fortranStatement	ENSURE DIE WARN DIE_IF
-syn keyword fortranStatement	return stop
-syn keyword fortranConditional	else then
-syn match fortranConditional	"\<if\>"
-syn match fortranRepeat		"\(\<parallel\> \)\?\<do\>"
+syn keyword fooUnitHeader          use only contains
+syn keyword fooUnitHeader          result interface operator
 
-syn keyword fortranTodo		contained todo fixme
+syn keyword fooUnitHeaderBad       procedure
+syn keyword fooUnitHeaderOld       entry
+syn match   fooUnitHeaderOld       display "block\s\+data"
+
+syn match   fooType                "\<implicit\>"
+syn match   fooType                "\<implicit\s\+real"
+syn match   fooType                "^\s*real\>"
+syn match   fooType                "\<implicit\s\+logical"
+syn match   fooType                "^\s*logical\>"
+syn keyword fooType                character complex integer
+syn keyword fooType                intrinsic
+
+syn keyword fooStructure           dimension
+syn keyword fooStructure           private public intent optional
+syn keyword fooStructure           pointer target allocatable readonly selfless
+
+syn keyword fooStorageClass        data parameter
+syn match   fooStorageClass        "\<kind\s*="me=s+4
+syn match   fooStorageClass        "\<len\s*="me=s+3
+syn keyword fooStorageClass        sequence
+syn keyword fooStorageClass        in out
+syn keyword fooStorageClassOld     common equivalence save
+
+syn keyword fooCall                call
+
+syn keyword fooStatement           ENSURE DIE WARN DIE_IF
+syn keyword fooStatement           return stop
+syn keyword fooStatement           allocate deallocate nullify cycle exit
+syn keyword fooStatementOld        continue
+syn match   fooStatementOld        "\<go\s*to\>"
+syn keyword fooStatementOld        assign pause to
+
+syn match   fooConditional         "\<if\>"
+syn keyword fooConditional         else then
+syn match   fooConditional         "\<else\s*if"
+syn match   fooConditional         "\<end\s*if"
+syn match   fooConditional         "\<select\>"
+syn keyword fooConditional         case default
+syn match   fooConditional         "\<end\s*select"
+syn match   fooConditional         "\<select\s*case"
+syn keyword fooConditional         where elsewhere
+syn match   fooConditional         "\<end\s*where"
+syn match   fooConditional         "end"
+syn keyword fooConditionalBad      while
+
+syn match   fooLoop                "\(\<parallel\> \)\?\<do\>"
+syn match   fooLoop                "\<end\s*do"
+syn keyword fooLoop                forall
+syn match   fooLoop                "\<end\s*forall"
+syn match   fooLoop                "\(\<end\s*forall\s\+\)\@<=\a\w*\>"
+syn match   fooLoop                "\(\<end\s*do\s\+\)\@<=\a\w*\>"
+syn match   fooLoop                "\(\<end\s*if\s\+\)\@<=\a\w*\>"
+syn match   fooLoop                "\(\<end\s*select\s\+\)\@<=\a\w*\>"
+
+syn keyword fooTodo                contained todo fixme
 
 "Catch errors caused by too many right parentheses
-syn region fortranParen transparent start="(" end=")" contains=ALLBUT,fortranParenError,@fortranCommentGroup
-syn match  fortranParenError   ")"
+syn region  fooParen               transparent start="(" end=")" contains=ALLBUT,fooParenError,@fooCommentGroup
+syn match   fooParenError          ")"
 
-syn match fortranOperator	"\.\s*n\=eqv\s*\."
-syn match fortranOperator	"\.\s*\(and\|or\|not\)\s*\."
-syn match fortranOperator	"\(and\|or\|not\)"
-syn match fortranOperator	"\(+\|-\|/\|\*\|@\)"
+syn match   fooOperator            "\(+\|-\|/\|\*\|@\)"
 
-syn match fortranBoolean	"\.\s*\(true\|false\)\s*\."
+syn match   fooBoolean             "\(TRUE\|FALSE\)"
+syn match   fooBooleanOld          "\.\s*\(TRUE\|FALSE\)\s*\."
+syn match   fooBooleanOld          "\.\s*\(true\|false\)\s*\."
 
-syn keyword fortranReadWrite	backspace close inquire open rewind endfile
-syn keyword fortranReadWrite	read write print
+syn match   fooBoolOperator        "\(\(>\|<\)=\|==\|/=\|=\|=>\)"
+syn keyword fooBoolOperator        AND OR EQV NEQV NOT
+syn match   fooBoolOperatorOld     "\.\s*\(GT\|gt\|LT\|lt\|LEQ\|leq\|NE\|ne\|eq\|ne\)\s*\."
+syn match   fooBoolOperatorOld     "\.\s*\(AND\|OR\|XOR\|NOT\|EQV\|NEQV\)\s*\."
+syn match   fooOperatorOld         "\.\s*\(and\|or\|xor\|not\|eqv\|neqv\)\s*\."
 
-"If tabs are allowed then the left margin checks do not work
-if exists("fortran_have_tabs")
-  syn match fortranTab		"\t"  transparent
-else
-  syn match fortranTab		"\t"
-endif
+syn keyword fooArgDecl             "::"
+syn keyword fooProcDecl            ":::"
 
-syn keyword fortranIO		unit file iostat access blank fmt form
-syn keyword fortranIO		recl status exist opened number named name
-syn keyword fortranIO		sequential direct rec
-syn keyword fortranIO		formatted unformatted nextrec
+syn keyword fooArgIntent           IN INOUT OUT
+syn keyword fooProcIntent          elemental ELEMENTAL impure pure PURE
+syn keyword fooProcIntent          leaky recursive routinal functional
+syn keyword fooProcIntent          get_from inlined_by_foo template
 
-syn keyword fortran66Intrinsic		cabs ccos cexp clog csin csqrt
-syn keyword fortran66Intrinsic		dacos dasin datan datan2 dcos dcosh
-syn keyword fortran66Intrinsic		ddim dexp dint dlog dlog10 dmod dabs
-syn keyword fortran66Intrinsic		dnint dsign dsin dsinh dsqrt dtan
-syn keyword fortran66Intrinsic		dtanh iabs idim idnint isign idint ifix
-syn keyword fortran66Intrinsic		amax0 amax1 dmax1 max0 max1
-syn keyword fortran66Intrinsic		amin0 amin1 dmin1 min0 min1
-syn keyword fortran66Intrinsic		amod float sngl alog alog10
+syn match   fooTab                 "\t"
+
+syn keyword fooReadWrite           backspace close inquire open rewind endfile
+syn keyword fooReadWrite           read write print
+
+syn keyword fooIO                  unit file iostat access blank fmt form
+syn keyword fooIO                  recl status exist opened number named name
+syn keyword fooIO                  sequential direct rec
+syn keyword fooIO                  formatted unformatted nextrec
+syn match   fooIO                  contains=fooOperator "\<e\(nd\|rr\)\s*=\s*\d\+"
+syn keyword fooIO                  pad position action delim readwrite
+syn keyword fooIO                  eor advance nml
+syn keyword fooIOBad               format
+syn keyword fooIOBad               namelist
+
+syn keyword foo66IntrinsicOld      cabs ccos cexp clog csin csqrt
+syn keyword foo66IntrinsicOld      dacos dasin datan datan2 dcos dcosh
+syn keyword foo66IntrinsicOld      ddim dexp dint dlog dlog10 dmod dabs
+syn keyword foo66IntrinsicOld      dnint dsign dsin dsinh dsqrt dtan
+syn keyword foo66IntrinsicOld      dtanh iabs idim idnint isign idint ifix
+syn keyword foo66IntrinsicOld      amax0 amax1 dmax1 max0 max1
+syn keyword foo66IntrinsicOld      amin0 amin1 dmin1 min0 min1
+syn keyword foo66IntrinsicOld      amod float sngl alog alog10
+
+syn keyword foo77Intrinsic         abs acos aimag aint anint asin atan atan2
+syn keyword foo77Intrinsic         cos sin tan sinh cosh tanh exp log log10
+syn keyword foo77Intrinsic         sign sqrt int cmplx nint min max conjg
+syn keyword foo77Intrinsic         char ichar index
+syn match   foo77Intrinsic         "\<len\s*[(,]"me=s+3
+syn match   foo77Intrinsic         "\<real\s*("me=s+4
+syn keyword foo77IntrinsicOld      dble dprod
+syn keyword foo77IntrinsicOld      lge lgt lle llt mod
+
+syn keyword foo90Intrinsic         achar adjustl adjustr all allocated any
+syn keyword foo90Intrinsic         associated bit_size btest ceiling
+syn keyword foo90Intrinsic         count cshift date_and_time
+syn keyword foo90Intrinsic         digits dot_product eoshift epsilon exponent
+syn keyword foo90Intrinsic         floor fraction huge iachar iand ibclr ibits ibset ieor
+syn keyword foo90Intrinsic         ior ishft ishftc lbound len_trim
+syn keyword foo90Intrinsic         matmul maxexponent maxloc maxval merge
+syn keyword foo90Intrinsic         minexponent minloc minval modulo mvbits nearest
+syn keyword foo90Intrinsic         pack present product radix random_number
+syn keyword foo90Intrinsic         random_seed range repeat reshape rrspacing scale
+syn keyword foo90Intrinsic         selected_int_kind selected_real_kind scan
+syn keyword foo90Intrinsic         shape size spacing spread set_exponent
+syn keyword foo90Intrinsic         tiny transfer transpose trim ubound unpack verify
+syn keyword foo90Intrinsic         precision sum system_clock
+syn match   foo90Intrinsic         "\<not\>\(\s*\.\)\@!"me=s+3
+syn match   foo90Intrinsic         "\<kind\>\s*[(]"me=s+4
+syn match   foo90Intrinsic         "\<logical\s*("me=s+7
+syn keyword foo95Intrinsic         null cpu_time
 
 " Intrinsics provided by some vendors
-syn keyword fortranExtraIntrinsic	cdabs cdcos cdexp cdlog cdsin cdsqrt
-syn keyword fortranExtraIntrinsic	cqabs cqcos cqexp cqlog cqsin cqsqrt
-syn keyword fortranExtraIntrinsic	qacos qasin qatan qatan2 qcos qcosh
-syn keyword fortranExtraIntrinsic	qdim qexp iqint qlog qlog10 qmod qabs
-syn keyword fortranExtraIntrinsic	qnint qsign qsin qsinh qsqrt qtan
-syn keyword fortranExtraIntrinsic	qtanh qmax1 qmin1
-syn keyword fortranExtraIntrinsic	dimag qimag dcmplx qcmplx dconjg qconjg
-syn keyword fortranExtraIntrinsic	gamma dgamma qgamma algama dlgama qlgama
-syn keyword fortranExtraIntrinsic	erf derf qerf erfc derfc qerfc
+syn keyword fooSpecialIntrinsic    cdabs cdcos cdexp cdlog cdsin cdsqrt
+syn keyword fooSpecialIntrinsic    cqabs cqcos cqexp cqlog cqsin cqsqrt
+syn keyword fooSpecialIntrinsic    qacos qasin qatan qatan2 qcos qcosh
+syn keyword fooSpecialIntrinsic    qdim qexp iqint qlog qlog10 qmod qabs
+syn keyword fooSpecialIntrinsic    qnint qsign qsin qsinh qsqrt qtan
+syn keyword fooSpecialIntrinsic    qtanh qmax1 qmin1
+syn keyword fooSpecialIntrinsic    dimag qimag dcmplx qcmplx dconjg qconjg
+syn keyword fooSpecialIntrinsic    gamma dgamma qgamma algama dlgama qlgama
+syn keyword fooSpecialIntrinsic    erf derf qerf erfc derfc qerfc
 
-syn keyword fortran77Intrinsic	abs acos aimag aint anint asin atan atan2
-syn keyword fortran77Intrinsic	cos sin tan sinh cosh tanh exp log log10
-syn keyword fortran77Intrinsic	sign sqrt int cmplx nint min max conjg
-syn keyword fortran77Intrinsic	char ichar index
-syn match fortran77Intrinsic	"\<len\s*[(,]"me=s+3
-syn match fortran77Intrinsic	"\<real\s*("me=s+4
-syn match fortranType		"\<implicit\s\+real"
-syn match fortranType		"^\s*real\>"
-syn match fortran90Intrinsic	"\<logical\s*("me=s+7
-syn match fortranType		"\<implicit\s\+logical"
-syn match fortranType		"^\s*logical\>"
 
-"Numbers of various sorts
-" Integers
-syn match fortranNumber	display "\<\d\+\(_\a\w*\)\=\>"
-" floating point number, without a decimal point
-syn match fortranFloatNoDec	display	"\<\d\+[deq][-+]\=\d\+\(_\a\w*\)\=\>"
-" floating point number, starting with a decimal point
-syn match fortranFloatIniDec	display	"\.\d\+\([deq][-+]\=\d\+\)\=\(_\a\w*\)\=\>"
-" floating point number, no digits after decimal
-syn match fortranFloatEndDec	display	"\<\d\+\.\([deq][-+]\=\d\+\)\=\(_\a\w*\)\=\>"
-" floating point number, D or Q exponents
-syn match fortranFloatDExp	display	"\<\d\+\.\d\+\([dq][-+]\=\d\+\)\=\(_\a\w*\)\=\>"
-" floating point number
-syn match fortranFloat	display	"\<\d\+\.\d\+\(e[-+]\=\d\+\)\=\(_\a\w*\)\=\>"
-" Numbers in formats
-syn match fortranFormatSpec	display	"\d*f\d\+\.\d\+"
-syn match fortranFormatSpec	display	"\d*e[sn]\=\d\+\.\d\+\(e\d+\>\)\="
-syn match fortranFormatSpec	display	"\d*\(d\|q\|g\)\d\+\.\d\+\(e\d+\)\="
-syn match fortranFormatSpec	display	"\d\+x\>"
+" Integer
+syn match   fooNumber              display "\<\d\+\(_\a\w*\)\=\>"
+
+" String
+syn region  fooStringBad           start=+'+ end=+'+ contains=fooContinueMark,fooLeftMargin
+
+" Float
+syn match   fooFloat               display "\<\d\+\.\d\+\(e[-+]\=\d\+\)\=\(_\a\w*\)\=\>"
+
+" Bad Floats
+syn match   fooFloatNoDecBad       display "\<\d\+[deq][-+]\=\d\+\(_\a\w*\)\=\>"
+syn match   fooFloatIniDecBad      display "\.\d\+\([deq][-+]\=\d\+\)\=\(_\a\w*\)\=\>"
+syn match   fooFloatEndDecBad      display "\<\d\+\.\([deq][-+]\=\d\+\)\=\(_\a\w*\)\=\>"
+syn match   fooFloatDExpBad        display "\<\d\+\.\d\+\([dq][-+]\=\d\+\)\=\(_\a\w*\)\=\>"
+
+" Numbers in format specifiers
+syn match   fooFormatSpec          display "\d*f\d\+\.\d\+"
+syn match   fooFormatSpec          display "\d*e[sn]\=\d\+\.\d\+\(e\d+\>\)\="
+syn match   fooFormatSpec          display "\d*\(d\|q\|g\)\d\+\.\d\+\(e\d+\)\="
+syn match   fooFormatSpec          display "\d\+x\>"
+
 " The next match would pick up identifiers as well
-" syn match fortranFormatSpec	display	"\<\(a\|i\)\d\+"
+" syn match fooFormatSpec    display    "\<\(a\|i\)\d\+"
 
 " Numbers as labels
-syn match fortranLabelNumber	display	"^\d\{1,5}\>"
-syn match fortranLabelNumber	display	"^ \d\{1,4}\>"ms=s+1
-syn match fortranLabelNumber	display	"^  \d\{1,3}\>"ms=s+2
-syn match fortranLabelNumber	display	"^   \d\d\=\>"ms=s+3
-syn match fortranLabelNumber	display	"^    \d\>"ms=s+4
+syn match   fooLabelNumberOld      display "^\d\{1,5}\>"
+syn match   fooLabelNumberOld      display "^ \d\{1,4}\>"ms=s+1
+syn match   fooLabelNumberOld      display "^  \d\{1,3}\>"ms=s+2
+syn match   fooLabelNumberOld      display "^   \d\d\=\>"ms=s+3
+syn match   fooLabelNumberOld      display "^    \d\>"ms=s+4
 
-if exists("fortran_more_precise")
-  " Numbers as targets
-  syn match fortranTarget	display	"\(\<if\s*(.\+)\s*\)\@<=\(\d\+\s*,\s*\)\{2}\d\+\>"
-  syn match fortranTarget	display	"\(\<do\s\+\)\@<=\d\+\>"
-  syn match fortranTarget	display	"\(\<go\s*to\s*(\=\)\@<=\(\d\+\s*,\s*\)*\d\+\>"
-endif
+" Numbers as targets
+syn match   fooTargetOld           display "\(\<if\s*(.\+)\s*\)\@<=\(\d\+\s*,\s*\)\{2}\d\+\>"
+syn match   fooTargetOld           display "\(\<do\s\+\)\@<=\d\+\>"
+syn match   fooTargetOld           display "\(\<go\s*to\s*(\=\)\@<=\(\d\+\s*,\s*\)*\d\+\>"
 
-syn keyword fortranTypeEx	external
-syn keyword fortranIOEx		format
-syn keyword fortranStatementEx	continue
-syn match fortranStatementEx	"\<go\s*to\>"
-syn region fortranStringEx	start=+'+ end=+'+ contains=fortranContinueMark,fortranLeftMargin,fortranSerialNumber
-syn keyword fortran77IntrinsicEx	lge lgt lle llt mod
-syn keyword fortranStatementOb	assign pause to
 
-  syn keyword fortranType	type array none
+syn keyword fooType                type array none
+syn match   fooType                "\<end\s*type"
+syn keyword fooTypeBad             external
+syn match   fooTypeOld             display "double\s\+precision"
+syn match   fooTypeOld             display "double\s\+complex"
 
-  syn keyword fortranStructure	private public intent optional 
-  syn keyword fortranStructure	pointer target allocatable readonly selfless
-  syn keyword fortranStorageClass	in out
-  syn match fortranStorageClass	"\<kind\s*="me=s+4
-  syn match fortranStorageClass	"\<len\s*="me=s+3
 
-  syn match fortranUnitHeader	"\<module\>"
-  syn keyword fortranUnitHeader	use only contains
-  syn keyword fortranUnitHeader	recursive result interface operator
-  syn keyword fortranStatement	allocate deallocate nullify cycle exit
-  syn match fortranConditional	"\<select\>"
-  syn keyword fortranConditional	case default DEFAULT DEFAULT_NULL where elsewhere
+syn keyword fooInclude             include
 
-  syn match fortranOperator	"\(\(>\|<\)=\=\|==\|/=\|=\)"
-  syn match fortranOperator	"=>"
-  syn match fortranOperator	"::"
-  syn match fortranOperator	":::"
 
-  syn region fortranString	start=+"+ end=+"+	contains=fortranLeftMargin,fortranContinueMark,fortranSerialNumber
-  syn keyword fortranIO		pad position action delim readwrite
-  syn keyword fortranIO		eor advance nml
+syn cluster fooCommentGroup        contains=fooTodo
+syn match   fooComment             excludenl "!.*$" contains=@fooCommentGroup
 
-  syn keyword fortran90Intrinsic	adjustl adjustr all allocated any
-  syn keyword fortran90Intrinsic	associated bit_size btest ceiling
-  syn keyword fortran90Intrinsic	count cshift date_and_time
-  syn keyword fortran90Intrinsic	digits dot_product eoshift epsilon exponent
-  syn keyword fortran90Intrinsic	floor fraction huge iand ibclr ibits ibset ieor
-  syn keyword fortran90Intrinsic	ior ishft ishftc lbound len_trim
-  syn keyword fortran90Intrinsic	matmul maxexponent maxloc maxval merge
-  syn keyword fortran90Intrinsic	minexponent minloc minval modulo mvbits nearest
-  syn keyword fortran90Intrinsic	pack present product radix random_number
-  syn match fortran90Intrinsic		"\<not\>\(\s*\.\)\@!"me=s+3
-  syn keyword fortran90Intrinsic	random_seed range repeat reshape rrspacing scale
-  syn keyword fortran90Intrinsic	selected_int_kind selected_real_kind scan
-  syn keyword fortran90Intrinsic	shape size spacing spread set_exponent
-  syn keyword fortran90Intrinsic	tiny transpose trim ubound unpack verify
-  syn keyword fortran90Intrinsic	precision sum system_clock
-  syn match fortran90Intrinsic	"\<kind\>\s*[(]"me=s+4
-
-  syn match  fortranUnitHeader	"\<end\s*function"
-  syn match  fortranUnitHeader	"\<end\s*interface"
-  syn match  fortranUnitHeader	"\<end\s*module"
-  syn match  fortranUnitHeader	"\<end\s*program"
-  syn match  fortranUnitHeader	"\<end\s*subroutine"
-  syn match  fortranRepeat	"\<end\s*do"
-  syn match  fortranConditional	"\<end\s*where"
-  syn match  fortranConditional	"\<select\s*case"
-  syn match  fortranConditional	"\<end\s*select"
-  syn match  fortranType	"\<end\s*type"
-  syn match  fortranType	"\<in\s*out"
-
-  syn keyword fortranUnitHeaderEx	procedure
-  syn keyword fortranIOEx		namelist
-  syn keyword fortranConditionalEx	while
-  syn keyword fortran90IntrinsicEx	achar iachar transfer
-
-  syn keyword fortranInclude		include
-  syn keyword fortran90StorageClassR	sequence
-
-syn match   fortranConditional	"\<end\s*if"
-syn match   fortranIO        	contains=fortranOperator "\<e\(nd\|rr\)\s*=\s*\d\+"
-syn match   fortranConditional	"\<else\s*if"
-
-syn keyword fortranUnitHeaderR	entry
-syn match fortranTypeR		display "double\s\+precision"
-syn match fortranTypeR		display "double\s\+complex"
-syn match fortranUnitHeaderR	display "block\s\+data"
-syn keyword fortranStorageClassR	common equivalence data
-syn keyword fortran77IntrinsicR	dble dprod
-syn match   fortran77OperatorR	"\.\s*[gl][et]\s*\."
-syn match   fortran77OperatorR	"\.\s*\(eq\|ne\)\s*\."
-
-  syn keyword fortranRepeat		forall
-  syn match fortranRepeat		"\<end\s*forall"
-  syn keyword fortran95Intrinsic	null cpu_time
-  syn keyword fortranType		elemental ELEMENTAL pure PURE
-  if exists("fortran_more_precise")
-    syn match fortranConstructName "\(\<end\s*forall\s\+\)\@<=\a\w*\>"
-  endif
-
-syn cluster fortranCommentGroup contains=fortranTodo
-syn match fortranComment	excludenl "!.*$" contains=@fortranCommentGroup
-
-"cpp is often used with Fortran
-syn match	cPreProc		"^\s*#\s*\(define\|ifdef\)\>.*"
-syn match	cPreProc		"^\s*#\s*\(elif\|if\)\>.*"
-syn match	cPreProc		"^\s*#\s*\(ifndef\|undef\)\>.*"
-syn match	cPreCondit		"^\s*#\s*\(else\|endif\)\>"
-syn region	cIncluded	contained start=+"[^(]+ skip=+\\\\\|\\"+ end=+"+ contains=fortranLeftMargin,fortranContinueMark,fortranSerialNumber
-syn match	cIncluded		contained "<[^>]*>"
-syn match	cInclude		"^\s*#\s*include\>\s*["<]" contains=cIncluded
+"cpp is often used with foo
+syn match   cPreProc               "^\s*#\s*\(define\|ifdef\)\>.*"
+syn match   cPreProc               "^\s*#\s*\(elif\|if\)\>.*"
+syn match   cPreProc               "^\s*#\s*\(ifndef\|undef\)\>.*"
+syn match   cPreCondit             "^\s*#\s*\(else\|endif\)\>"
+syn region  cIncluded              contained start=+"[^(]+ skip=+\\\\\|\\"+ end=+"+ contains=fooLeftMargin,fooContinueMark
+syn match   cIncluded              contained "<[^>]*>"
+syn match   cInclude               "^\s*#\s*include\>\s*["<]" contains=cIncluded
 
 "Synchronising limits assume that comment and continuation lines are not mixed
 syn sync minlines=20
 
-if exists("fortran_fold")
-  syn sync fromstart
-  syn region fortranModule transparent fold keepend start="^\(virtual \)\?module\s\+\z(\a\w*\)" excludenl end="^end\s*\(module\(\s\+\z1\>\)\=\|$\)" contains=ALLBUT,fortranProgram
-
-  syn region fortranSubroutine transparent fold keepend extend start="^!\=   \z(\a\w*\)\(.*\_s\_^!\=   !\)\@=" excludenl end="^!\=   end\s*\($\|subroutine\)" contains=ALLBUT,fortranProgram,fortranModule,fortranSubroutine,fortranFunction
-  syn region fortranFunction transparent fold keepend extend start="^!\=   \z(\a\w*\)\(.* result.*\_s\_^!\=   !\)\@=" excludenl end="^!\=   end\s*\($\|function\)" contains=ALLBUT,fortranProgram,fortranModule,fortranSubroutine,fortranFunction
-  syn region fortranInterface transparent fold keepend extend start="^\s*interface\s\+\z(\a\w*\)" excludenl end="\<end\s*\($\|interface\(\s\+\z1\>\)\=\)" contains=ALLBUT,fortranProgram,fortranModule
-  syn region fortranType transparent fold keepend extend start="^!\=\s*\(array\|type\)\s\+\z(\a\w*\)" excludenl end="\<end\s*\($\|type\(\s\+\z1\>\)\=\)" contains=ALLBUT,fortranProgram,fortranModule,fortranSubroutine,fortranFunction
-  syn region fortranData transparent fold keepend start="^!\=   data\s\+\z(\a\(\w\|[( :,)]\)*\)/" excludenl end="!\=/\s*\($\|!.*$\)" contains=ALLBUT,fortranProgram,fortranModule,fortranSubroutine,fortranFunction,fortranInterface,fortranData
-
-
+if exists("foo_fold")
+  syn sync   fromstart
+  syn region fooModule             transparent fold keepend start="^\(virtual \)\?module\s\+\z(\a\w*\)" excludenl end="^end\s*\(module\(\s\+\z1\>\)\=\|$\)" contains=ALLBUT,fooProgram
+  syn region fooSubroutine         transparent fold keepend extend start="^!\=   \z(\a\w*\)\(.*\_s\_^!\=   !\)\@=" excludenl end="^!\=   end\s*\($\|subroutine\)" contains=ALLBUT,fooProgram,fooModule,fooSubroutine,fooFunction
+  syn region fooFunction           transparent fold keepend extend start="^!\=   \z(\a\w*\)\(.* result.*\_s\_^!\=   !\)\@=" excludenl end="^!\=   end\s*\($\|function\)" contains=ALLBUT,fooProgram,fooModule,fooSubroutine,fooFunction
+  syn region fooInterface          transparent fold keepend extend start="^\s*interface\s\+\z(\a\w*\)" excludenl end="\<end\s*\($\|interface\(\s\+\z1\>\)\=\)" contains=ALLBUT,fooProgram,fooModule
+  syn region fooType               transparent fold keepend extend start="^!\=\s*\(array\|type\)\s\+\z(\a\w*\)" excludenl end="\<end\s*\($\|type\(\s\+\z1\>\)\=\)" contains=ALLBUT,fooProgram,fooModule,fooSubroutine,fooFunction
+  syn region fooData               transparent fold keepend start="^!\=   data\s\+\z(\a\(\w\|[( :,)]\)*\)/" excludenl end="!\=/\s*\($\|!.*$\)" contains=ALLBUT,fooProgram,fooModule,fooSubroutine,fooFunction,fooInterface,fooData
 endif
 
-" The default highlighting differs for each dialect.
-" Transparent groups:
-" fortranParen, fortranLeftMargin
-" fortranProgram, fortranModule, fortranSubroutine, fortranFunction,
-" fortranBlockData
-" fortran77Loop, fortran90Loop, fortranIfBlock, fortranCase
-hi def link fortranStatement		Statement
-hi def link fortranConstructName	Special
-hi def link fortranConditional		Conditional
-hi def link fortranRepeat		Repeat
-hi def link fortranTodo			Todo
-hi def link fortranContinueMark		Todo
-hi def link fortranString		String
-hi def link fortranNumber		Number
-hi def link fortranOperator		Operator
-hi def link fortranBoolean		Boolean
-hi def link fortranLabelError		Error
-hi def link fortranObsolete		Todo
-hi def link fortranType			Type
-hi def link fortranStructure		Type
-hi def link fortranCall			fortranUnitHeader
-hi def link fortranUnitHeader		fortranPreCondit
-hi def link fortranReadWrite		fortran90Intrinsic
-hi def link fortran95Intrinsic		fortran90Intrinsic
-hi def link fortran77Intrinsic		fortran90Intrinsic
-hi def link fortran90Intrinsic		Special
+" Highlighting
+" Transparent groups: fooParen, fooLeftMargin fooProgram, fooModule,
+" fooSubroutine, fooFunction, fooBlockDat, foo77Loop, foo90Loop,
+" fooIfBlock, fooCase
 
-  hi def link fortranStatementOb	fortranObsolete
-  hi def link fortran66Intrinsic	fortranObsolete
-  hi def link fortran77IntrinsicR	fortranObsolete
-  hi def link fortranUnitHeaderR	fortranObsolete
-  hi def link fortranTypeR		fortranObsolete
-  hi def link fortran77OperatorR	fortranObsolete
-  hi def link fortranInclude		fortranObsolete
+hi def link fooStatement        Statement
+hi def link fooConditional      Conditional
+hi def link fooLoop             Repeat
+hi def link fooString           String
+hi def link fooNumber           Number
+hi def link fooOperator         Operator
+hi def link fooBoolOperator     Operator
+hi def link fooArgIntent        Statement
+hi def link fooProcIntent       Statement
+hi def link fooArgDecl          Operator
+hi def link fooProcDecl         Operator
+hi def link fooBoolean          Boolean
+hi def link fooType             Type
+hi def link fooStructure        Type
+hi def link fooCall             Special
+hi def link fooUnitHeader       Statement
+hi def link fooReadWrite        foo90Intrinsic
+hi def link foo95Intrinsic      foo90Intrinsic
+hi def link foo77Intrinsic      foo90Intrinsic
+hi def link foo90Intrinsic      Special
+hi def link fooFloat            Float
+hi def link fooInclude          Include
+hi def link cIncluded           fooString
+hi def link cInclude            Include
+hi def link cPreProc            PreProc
+hi def link fooPreCondit        PreCondit
+hi def link cPreCondit          PreCondit
+hi def link fooComment          Comment
+hi def link fooFormatSpec       Special
 
-  hi def link fortranLabelNumber	fortranObsolete
-  hi def link fortranTarget		fortranObsolete
-  hi def link fortranFormatSpec		fortranObsolete
-  hi def link fortranFloatDExp		fortranObsolete
-  hi def link fortranFloatNoDec		fortranObsolete
-  hi def link fortranFloatIniDec	fortranObsolete
-  hi def link fortranFloatEndDec	fortranObsolete
-  hi def link fortranTypeEx		fortranObsolete
-  hi def link fortranIOEx		fortranObsolete
-  hi def link fortranStatementEx	fortranObsolete
-  hi def link fortranStringEx		fortranObsolete
-  hi def link fortran77IntrinsicEx	fortranObsolete
-  hi def link fortranUnitHeaderEx	fortranObsolete
-  hi def link fortranConditionalEx	fortranObsolete
-  hi def link fortran90IntrinsicEx	fortranObsolete
-
-hi def link fortranFloat		Float
-
-hi def link fortran90Identifier		fortranIdentifier
-"Uncomment the next line if you want all fortran variables to be highlighted
-"hi def link fortranIdentifier		Identifier
-hi def link fortranPreCondit		PreCondit
-hi def link fortranInclude		Include
-hi def link cIncluded			fortranString
-hi def link cInclude			Include
-hi def link cPreProc			PreProc
-hi def link cPreCondit			PreCondit
-hi def link fortranParenError		Error
-hi def link fortranComment		Comment
-hi def link fortranSerialNumber		Todo
-hi def link fortranTab			Error
+" Uncomment the next line if you foo variables are to be highlighted
+"hi def link fooIdentifier        Identifier
 
 " Vendor extensions
-hi def link fortranExtraIntrinsic	Special
+hi def link fooSpecialIntrinsic Special
 
-let b:current_syntax = "fortran"
+" Todo
+hi def link fooTodo             Todo
+hi def link fooContinueMark     Todo
 
-" vim: ts=8 tw=132
+
+" Errors
+
+hi def link fooOperatorBad      Error
+hi def link fooOperatorOld      Error
+hi def link fooStatementOld     Error
+hi def link foo66IntrinsicOld   Error
+hi def link foo77IntrinsicOld   Error
+hi def link fooUnitHeaderOld    Error
+hi def link fooUnitHeaderBad    Error
+hi def link fooTypeOld          Error
+hi def link fooStorageClassOld  Error
+hi def link fooLabelNumberOld   Error
+hi def link fooTargetOld        Error
+hi def link fooBooleanOld       Error
+hi def link fooBoolOperatorOld  Error
+hi def link fooFloatNoDecBad    Error
+hi def link fooFloatIniDecBad   Error
+hi def link fooFloatEndDecBad   Error
+hi def link fooFloatDExpBad     Error
+hi def link fooTypeBad          Error
+hi def link fooIOBad            Error
+hi def link fooStringBad        Error
+hi def link foo77IntrinsicOld   Error
+hi def link fooConditionalBad   Error
+hi def link fooParenError       Error
+hi def link fooTab              Error
 
 
+" Modifications for Foo
 
-" Insert modifications for Foo
-
-syn keyword fortranStructure PTR 
-
-syn match   fortranConditional "end"
-
-syn keyword fortranType leaky recursive routinal functional get_from
-syn keyword fortranType impure pure PURE elemental ELEMENTAL
-syn keyword fortranType inlined_by_foo
-syn keyword fortranType template
+syn keyword fooStructure PTR
 
 " Built-in and virtual types
-
-syn keyword fortranType SELF_TYPE
-syn keyword fortranType ELEMENT_TYPE
-syn keyword fortranType OBJECT
-syn keyword fortranType INTRINSIC 
-syn keyword fortranType MAP KEY VAL
+syn keyword fooType SELF_TYPE
+syn keyword fooType ELEMENT_TYPE
+syn keyword fooType OBJECT
+syn keyword fooType INTRINSIC
+syn keyword fooType MAP KEY VAL
 
 " Derived types and system
-
-syn keyword fortranType TYPES 
-syn keyword fortranType SYSTEM 
-syn keyword fortranType DEBUG
-syn keyword fortranType TIME
-syn keyword fortranType PARALLEL
-syn keyword fortranType COMMAND_LINE
+syn keyword fooType TYPES
+syn keyword fooType SYSTEM
+syn keyword fooType DEBUG
+syn keyword fooType TIME
+syn keyword fooType PARALLEL
+syn keyword fooType COMMAND_LINE
 
 " Intrinsic types and arrays
-
-syn keyword fortranType STR BSTR BIN INT REAL CPX
-syn keyword fortranType VEC  MAT  MAT3  MAT4  MAT5  MAT6  MAT7
-syn keyword fortranType VEC_ MAT_ MAT3_ MAT4_ MAT5_ MAT6_ MAT7_
-syn keyword fortranType OPVECTOR OPMATRIX
+syn keyword fooType STR BSTR BIN INT REAL CPX
+syn keyword fooType VEC  MAT  MAT3  MAT4  MAT5  MAT6  MAT7
+syn keyword fooType VEC_ MAT_ MAT3_ MAT4_ MAT5_ MAT6_ MAT7_
+syn keyword fooType OPVECTOR OPMATRIX
 
 " Files & IO
-
-syn keyword fortranType ARCHIVE
-syn keyword fortranType TEXTFILE
-syn keyword fortranType FILE
-syn keyword fortranType CIF
-syn keyword fortranType BUFFER 
-syn keyword fortranType UNIT_NUMBER
-syn keyword fortranType TABLE_COLUMN
+syn keyword fooType ARCHIVE
+syn keyword fooType TEXTFILE
+syn keyword fooType FILE
+syn keyword fooType CIF
+syn keyword fooType BUFFER
+syn keyword fooType UNIT_NUMBER
+syn keyword fooType TABLE_COLUMN
 
 " Gaussians, basis functions and shells
+syn keyword fooType GAUSSIAN
+syn keyword fooType GAUSSIAN2
+syn keyword fooType GAUSSIAN4
 
-syn keyword fortranType GAUSSIAN
-syn keyword fortranType GAUSSIAN2
-syn keyword fortranType GAUSSIAN4 
-
-syn keyword fortranType SHELL SHELL1 SHELL2 SHELL4 
-syn keyword fortranType SHELLPAIR  SHELLQUARTET 
-syn keyword fortranType SHELL1PAIR SHELL1QUARTET
-syn keyword fortranType SLATERSHELL 
-syn keyword fortranType COPPENSORBITAL 
+syn keyword fooType SHELL SHELL1 SHELL2 SHELL4
+syn keyword fooType SHELLPAIR  SHELLQUARTET
+syn keyword fooType SHELL1PAIR SHELL1QUARTET
+syn keyword fooType SLATERSHELL
+syn keyword fooType COPPENSORBITAL
 
 " Bases
-
-syn keyword fortranType BASIS
-syn keyword fortranType SLATERBASIS
-syn keyword fortranType COPPENSBASIS
+syn keyword fooType BASIS
+syn keyword fooType SLATERBASIS
+syn keyword fooType COPPENSBASIS
 
 " Integrals
-
-syn keyword fortranType RYS
-syn keyword fortranType GAUSSIAN_DATA
-syn keyword fortranType RMS_INDICES RMS2_INDICES
+syn keyword fooType RYS
+syn keyword fooType GAUSSIAN_DATA
+syn keyword fooType RMS_INDICES RMS2_INDICES
 
 " DFT and numerical integration
-
-syn keyword fortranType BECKE_GRID
-syn keyword fortranType LEBEDEV 
-syn keyword fortranType QUADRATURE 
-syn keyword fortranType DFT_FUNCTIONAL
+syn keyword fooType BECKE_GRID
+syn keyword fooType LEBEDEV
+syn keyword fooType QUADRATURE
+syn keyword fooType DFT_FUNCTIONAL
 
 " Symmetry
-
-syn keyword fortranType SPACEGROUP 
-syn keyword fortranType POINTGROUP
-syn keyword fortranType IRREP
+syn keyword fooType SPACEGROUP
+syn keyword fooType POINTGROUP
+syn keyword fooType IRREP
 
 " Crystals, unit cells and reflection data
-
-syn keyword fortranType CRYSTAL
-syn keyword fortranType UNIT_CELL 
-syn keyword fortranType DIFFRACTION_DATA 
-syn keyword fortranType REFLECTION 
-syn keyword fortranType MULTI_T_ADP
+syn keyword fooType CRYSTAL
+syn keyword fooType UNIT_CELL
+syn keyword fooType DIFFRACTION_DATA
+syn keyword fooType REFLECTION
+syn keyword fooType MULTI_T_ADP
 
 " Colours
-
-syn keyword fortranType COLOR
-syn keyword fortranType COLOR_FUNCTION 
+syn keyword fooType COLOR
+syn keyword fooType COLOR_FUNCTION
 
 " Plots and isosurfaces
-
-syn keyword fortranType CAPPING_SQUARE
-syn keyword fortranType ISOSURFACE 
-syn keyword fortranType PLOT_GRID 
-syn keyword fortranType MARCHINGCUBE
+syn keyword fooType CAPPING_SQUARE
+syn keyword fooType ISOSURFACE
+syn keyword fooType PLOT_GRID
+syn keyword fooType MARCHINGCUBE
 
 " SCF & wavefunctions
-
-syn keyword fortranType SCFDATA 
-syn keyword fortranType DIIS FOCK_DIIS
+syn keyword fooType SCFDATA
+syn keyword fooType DIIS FOCK_DIIS
 
 " Properties and analysis
-
-syn keyword fortranType INTERPOLATOR
-syn keyword fortranType ROBY
+syn keyword fooType INTERPOLATOR
+syn keyword fooType ROBY
 
 " Terms and polynomials
-syn keyword fortranType TERM_1D
-syn keyword fortranType TERM
-syn keyword fortranType POLYNOMIAL
+syn keyword fooType TERM_1D
+syn keyword fooType TERM
+syn keyword fooType POLYNOMIAL
 
 " Geminals
-syn keyword fortranType GEMINAL_MF_SPECTRUM
-syn keyword fortranType GEMINAL_MF_SCHEME
+syn keyword fooType GEMINAL_MF_SPECTRUM
+syn keyword fooType GEMINAL_MF_SCHEME
 
 " Atoms, clusters and molecules
+syn keyword fooType ATOM
+syn keyword fooType ATOM_GROUP
+syn keyword fooType CLUSTER
+syn keyword fooType MOLECULE
+syn keyword fooType MOLECULE.BASE
+syn keyword fooType MOLECULE.CE
+syn keyword fooType MOLECULE.CP
+syn keyword fooType MOLECULE.FOCK
+syn keyword fooType MOLECULE.GEM
+syn keyword fooType MOLECULE.GRID
+syn keyword fooType MOLECULE.INTS
+syn keyword fooType MOLECULE.MAIN
+syn keyword fooType MOLECULE.MISC
+syn keyword fooType MOLECULE.PLOT
+syn keyword fooType MOLECULE.PROP
+syn keyword fooType MOLECULE.REL
+syn keyword fooType MOLECULE.SCF
+syn keyword fooType MOLECULE.TAD
+syn keyword fooType MOLECULE.XTAL
 
-syn keyword fortranType ATOM 
-syn keyword fortranType ATOM_GROUP
-syn keyword fortranType CLUSTER
-syn keyword fortranType MOLECULE 
-syn keyword fortranType MOLECULE.BASE 
-syn keyword fortranType MOLECULE.CE
-syn keyword fortranType MOLECULE.CP
-syn keyword fortranType MOLECULE.FOCK
-syn keyword fortranType MOLECULE.GEM
-syn keyword fortranType MOLECULE.GRID
-syn keyword fortranType MOLECULE.INTS
-syn keyword fortranType MOLECULE.MAIN
-syn keyword fortranType MOLECULE.MISC
-syn keyword fortranType MOLECULE.PLOT
-syn keyword fortranType MOLECULE.PROP
-syn keyword fortranType MOLECULE.REL
-syn keyword fortranType MOLECULE.SCF
-syn keyword fortranType MOLECULE.TAD
-syn keyword fortranType MOLECULE.XTAL
 
-syn keyword fortranOperator AND OR EQV NEQV NOT IN INOUT OUT
-
-hi! link fortranContinueMark NONE
+hi! link fooContinueMark NONE
 hi! Identifier term=underline ctermfg=Black guifg=Black
 
-set comments=:!
+let b:current_syntax = "foo"
