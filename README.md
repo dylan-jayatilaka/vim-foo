@@ -1,4 +1,4 @@
 vim-foo
 =======
 
-vim bundle for the foo language - used by the tonto project
+A vim bundle for the Foo language - used by the Tonto project
